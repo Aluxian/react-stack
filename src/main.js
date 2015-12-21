@@ -1,2 +1,2 @@
-require('./main.scss');
-require('./routes');
+import './main.scss';
+import './routes';

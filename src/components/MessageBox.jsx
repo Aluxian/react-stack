@@ -1,38 +1,33 @@
 import React from 'react';
-import mui from 'material-ui';
+import {Card} from 'material-ui';
 import trim from 'trim';
-import Actions from '../actions';
+import actions from '../actions';
 
-var {Card} = mui;
-
-class MessageBox extends React.Component {
-  constructor(props){
+class MessageBox extends Component {
+  constructor(props) {
     super(props);
     this.state = {
       message: ''
-    }
+    };
   }
 
-  onChange(evt){
+  onChange(event) {
     this.setState({
-      message: evt.target.value
+      message: event.target.value
     });
   }
 
-  onKeyUp(evt){
-    if(evt.keyCode === 13 && trim(evt.target.value) != ''){
-      evt.preventDefault();
-
-      Actions.sendMessage(this.state.message);
-
+  onKeyUp(event) {
+    if (event.keyCode === 13 && trim(event.target.value) != '') {
+      event.preventDefault();
+      actions.sendMessage(this.state.message);
       this.setState({
         message: ''
       });
-
     }
   }
 
-  render(){
+  render() {
     return (
       <Card style={{
         maxWidth: 1200,
@@ -41,8 +36,8 @@ class MessageBox extends React.Component {
       }}>
         <textarea
           value={this.state.message}
-          onChange={this.onChange.bind(this)}
-          onKeyUp={this.onKeyUp.bind(this)}
+          onChange={::this.onChange}
+          onKeyUp={::this.onKeyUp}
           style={{
             width: '100%',
             borderColor: '#D0D0D0',

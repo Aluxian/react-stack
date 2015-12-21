@@ -1,36 +1,22 @@
-import alt from '../alt';
-import Firebase from 'firebase';
+import * as all from './all';
+import * as auth from './auth';
 
-class Actions {
-  constructor(){
-    this.generateActions(
-      'channelsReceived',
-      'channelsFailed',
-      'messagesReceived',
-      'messagesFailed',
-      'channelOpened',
-      'messagesLoading',
-      'sendMessage',
-      'messageSendSuccess',
-      'messageSendError',
-      'messageReceived'
-    );
-  }
+export default Object.assign({}, ...[
+  all,
+  auth
+]);
 
-  login(router){
-    return (dispatch) => {
-      var firebaseRef = new Firebase('https://react-stack.firebaseio.com');
-      firebaseRef.authWithOAuthPopup("google", (error, user)=> {
-        if(error){
-          return;
-        }
-
-        dispatch(user);
-
-        router.transitionTo('/chat');
-      });
-    }
-  }
-}
-
-export default alt.createActions(Actions);
+// login(router){
+//   return (dispatch) => {
+//     var firebaseRef = new Firebase('https://react-stack.firebaseio.com');
+//     firebaseRef.authWithOAuthPopup("google", (error, user)=> {
+//       if(error){
+//         return;
+//       }
+//
+//       dispatch(user);
+//
+//       router.transitionTo('/chat');
+//     });
+//   }
+// }

@@ -1,40 +1,25 @@
-import React from 'react';
+import React, {Component} from 'react';
+import {Card, List, CircularProgress} from 'material-ui';
 import Channel from './Channel.jsx';
-import mui from 'material-ui';
-import connectToStores from 'alt/utils/connectToStores';
-import ChatStore from '../stores/ChatStore';
 
-var {Card, List, CircularProgress} = mui;
-
-@connectToStores
-class ChannelList extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {channels: null};
+class ChannelList extends Component {
+  static propTypes = {
+    channels: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+    channelOpened: PropTypes.func.isRequired,
+    startListenForChannels: PropTypes.func.isRequired,
+    stopListenForChannels: PropTypes.func.isRequired
   }
 
-  componentDidMount(){
-    this.state.selectedChannel = this.props.params.channel;
-    ChatStore.getChannels(this.state.selectedChannel);
+  componentDidMount() {
+    // send action to download channels from firebase
   }
 
-  componentWillReceiveProps(nextProps){
-    if(this.state.selectedChannel != nextProps.params.channel){
-      this.state.selectedChannel = nextProps.params.channel;
-      ChatStore.getChannels(this.state.selectedChannel);
-    }
+  componentWillUnmount() {
+
   }
 
-  static getStores(){
-    return [ChatStore];
-  }
-
-  static getPropsFromStores(){
-    return ChatStore.getState();
-  }
-
-  render(){
-    if(!this.props.channels){
+  render() {
+    if (!this.props.channels.length) {
       return (
         <Card style={{
           flexGrow: 1
@@ -53,16 +38,9 @@ class ChannelList extends React.Component {
       );
     }
 
-
-    var channelNodes = _(this.props.channels)
-      .keys()
-      .map((k, i)=> {
-        let channel = this.props.channels[k];
-        return (
-          <Channel channel={channel} key={i}/>
-        );
-      })
-      .value();
+    const channelNodes = this.props.channels.map((channel, i) => {
+      return (<Channel channel={channel} key={i} channelOpened={this.props.channelOpened} />);
+    });
 
     return (
       <Card style={{

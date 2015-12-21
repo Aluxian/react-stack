@@ -1,9 +1,9 @@
-import Actions from '../actions';
+import * as reducers from '../reducers';
 import Firebase from 'firebase';
 
 let firebaseRef = null;
 
-let MessageSource = {
+const MessageSource = {
   getMessages: {
     remote(state){
 
@@ -24,16 +24,16 @@ let MessageSource = {
             firebaseRef.on("child_added", ((msg) => {
               let msgVal = msg.val();
               msgVal.key = msg.key();
-              Actions.messageReceived(msgVal);
+              reducers.messageReceived(msgVal);
             }));
           }, 10);
 
         })
       });
     },
-    success: Actions.messagesReceived,
-    error: Actions.messagesFailed,
-    loading: Actions.messagesLoading
+    success: reducers.messagesReceived,
+    error: reducers.messagesFailed,
+    loading: reducers.messagesLoading
   },
   sendMessage: {
     remote(state){
@@ -52,8 +52,8 @@ let MessageSource = {
         resolve();
       });
     },
-    success: Actions.messageSendSuccess,
-    error: Actions.messageSendError
+    success: reducers.messageSendSuccess,
+    error: reducers.messageSendError
   },
 }
 

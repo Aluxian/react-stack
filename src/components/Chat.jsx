@@ -1,11 +1,24 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 import MessageList from './MessageList.jsx';
 import ChannelList from './ChannelList.jsx';
 import MessageBox from './MessageBox.jsx';
-import ChatStore from '../stores/ChatStore';
+import actions from '../actions';
 
-class Chat extends React.Component {
-  render(){
+class Chat extends Component {
+  static propTypes = {
+    user: PropTypes.object,
+    messages: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+    messagesLoading: PropTypes.bool.isRequired,
+    channels: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+  }
+
+  static willTransitionTo(transition) {
+    if (!this.props.user) {
+      transition.redirect('/login');
+    }
+  }
+
+  render() {
     return (
       <div>
         <div style={{
@@ -15,20 +28,24 @@ class Chat extends React.Component {
           width: '100%',
           margin: '30px auto 30px'
         }}>
-          <ChannelList {...this.props} />
-          <MessageList />
+          <ChannelList channels={this.props.channels} />
+          <MessageList messagesLoading={this.props.messagesLoading} />
         </div>
         <MessageBox />
       </div>
     );
   }
-
-  static willTransitionTo(transition){
-    var state = ChatStore.getState();
-    if(!state.user){
-      transition.redirect('/login');
-    }
-  }
 }
 
-export default Chat;
+// Note: use https://github.com/faassen/reselect for better performance.
+function select(state) {
+  return {
+    user: state.user,
+    messages: state.messages,
+    messagesLoading: state.messagesLoading,
+    channels: state.channels,
+    channelOpened: actions.channelOpened
+  };
+}
+
+export default connect(select)(Chat);

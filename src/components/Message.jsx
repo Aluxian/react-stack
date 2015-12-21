@@ -1,18 +1,16 @@
 import React from 'react';
-import mui from 'material-ui';
+import {ListItem, Avatar} from 'material-ui';
 
-var {ListItem, Avatar} = mui;
-
-class Message extends React.Component {
-  constructor(props){
+class Message extends Component {
+  constructor(props) {
     super(props);
   }
 
-  render(){
+  render() {
     return (
-      <ListItem
-        leftAvatar={<Avatar src={this.props.message.profilePic} />}
-      >{this.props.message.message}</ListItem>
+      <ListItem leftAvatar={<Avatar src={this.props.message.profilePic} />}>
+        {this.props.message.message}
+      </ListItem>
     );
   }
 }

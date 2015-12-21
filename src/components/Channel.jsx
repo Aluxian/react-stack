@@ -1,22 +1,20 @@
-import React from 'react';
-import mui from 'material-ui';
-import Actions from '../actions';
+import React, {Component} from 'react';
+import {ListItem} from 'material-ui';
 
-var {ListItem} = mui;
-
-class Channel extends React.Component {
-  constructor(props){
-    super(props);
+class Channel extends Component {
+  static propTypes = {
+    channel: PropTypes.object.isRequired,
+    channelOpened: PropTypes.func.isRequired
   }
 
-  onClick(){
-    Actions.channelOpened(this.props.channel);
+  onClick() {
+    this.props.channelOpened(this.props.channel);
   }
 
-  render(){
-    let style = {};
+  render() {
+    const style = {};
 
-    if(this.props.channel.selected){
+    if (this.props.channel.selected) {
       style.backgroundColor = '#f0f0f0';
     }
 

@@ -1,9 +1,9 @@
-import Actions from '../actions';
+import * as reducers from '../reducers';
 import Firebase from 'firebase';
 
 let firebaseRef = new Firebase('https://react-stack.firebaseio.com/channels');
 
-let ChannelSource = {
+const ChannelSource = {
   getChannels: {
     remote(state, selectedChannelKey){
       return new Promise((resolve, reject) => {
@@ -18,8 +18,8 @@ let ChannelSource = {
         });
       });
     },
-    success: Actions.channelsReceived,
-    error: Actions.channelsFailed
+    success: reducers.channelsReceived,
+    error: reducers.channelsFailed
   }
 }
 
