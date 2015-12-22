@@ -5,10 +5,10 @@ import App from '../components/App.jsx';
 import Chat from '../components/Chat.jsx';
 import Login from '../components/Login.jsx';
 
-import { Provider } from 'react-redux';
-import { Router, Route, DefaultRoute } from 'react-router';
+import {Provider} from 'react-redux';
+import {Router, Route, DefaultRoute} from 'react-router';
 import {syncReduxAndRouter} from 'redux-simple-router';
-import { createHistory } from 'history';
+import {createHistory} from 'history';
 
 import store from '../store';
 

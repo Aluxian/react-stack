@@ -1,7 +1,6 @@
-import React from 'react';
+import {Component, PropTypes} from 'react';
 import {Card} from 'material-ui';
 import trim from 'trim';
-import actions from '../actions';
 
 class MessageBox extends Component {
   constructor(props) {
@@ -9,6 +8,10 @@ class MessageBox extends Component {
     this.state = {
       message: ''
     };
+  }
+
+  static propTypes = {
+    sendMessage: PropTypes.func.isRequired
   }
 
   onChange(event) {
@@ -20,7 +23,7 @@ class MessageBox extends Component {
   onKeyUp(event) {
     if (event.keyCode === 13 && trim(event.target.value) != '') {
       event.preventDefault();
-      actions.sendMessage(this.state.message);
+      this.props.sendMessage(this.state.message);
       this.setState({
         message: ''
       });
