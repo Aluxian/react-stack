@@ -1,18 +1,22 @@
 import React, {Component, PropTypes} from 'react';
 import {Card, CardText, RaisedButton} from 'material-ui';
+import firebaseRef from '../firebase';
+import actions from '../actions';
 
 class Login extends Component {
   static propTypes = {
-    login: PropTypes.func//.isRequired
-  }
-
-  static contextTypes = {
-    router: PropTypes.func//.isRequired
+    history: PropTypes.object.isRequired
   }
 
   onClick() {
-    console.log('click');
-    //this.props.login(this.context.router);
+    firebaseRef.authWithOAuthPopup('google', (err, user) => {
+      if (err) {
+        return console.error(err);
+      }
+
+      actions.login(user);
+      this.props.history.pushState(null, '/chat');
+    });
   }
 
   render() {
