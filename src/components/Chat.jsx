@@ -1,4 +1,4 @@
-import {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 // import MessageList from './MessageList.jsx';
 // import ChannelList from './ChannelList.jsx';
 import MessageBox from './MessageBox.jsx';
@@ -8,9 +8,10 @@ import actions from '../actions';
 class Chat extends Component {
   static propTypes = {
     user: PropTypes.object,
-    messages: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-    messagesLoading: PropTypes.bool.isRequired,
-    channels: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired
+    messages: PropTypes.arrayOf(PropTypes.object.isRequired),
+    messagesLoading: PropTypes.bool,
+    channels: PropTypes.arrayOf(PropTypes.object),
+    channelOpened: PropTypes.func
   }
 
   static willTransitionTo(transition) {

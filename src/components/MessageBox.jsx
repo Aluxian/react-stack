@@ -1,17 +1,17 @@
-import {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Card} from 'material-ui';
 import trim from 'trim';
 
 class MessageBox extends Component {
+  static propTypes = {
+    sendMessage: PropTypes.func.isRequired
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       message: ''
     };
-  }
-
-  static propTypes = {
-    sendMessage: PropTypes.func.isRequired
   }
 
   onChange(event) {

@@ -1,10 +1,8 @@
 import React, {Component, PropTypes} from 'react';
-// import {connect} from 'react-redux';
-import mui from 'material-ui';
+import mui, {AppBar} from 'material-ui';
 
 const ThemeManager = new mui.Styles.ThemeManager();
 const Colors = mui.Styles.Colors;
-const AppBar = mui.AppBar;
 
 class App extends Component {
   static propTypes = {
@@ -41,11 +39,5 @@ class App extends Component {
     );
   }
 }
-
-// Which props do we want to inject, given the global state?
-// Note: use https://github.com/faassen/reselect for better performance.
-// function select(state) {
-//   return state;
-// }
 
 export default App;

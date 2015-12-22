@@ -2,8 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import App from '../components/App.jsx';
-import DevTools from '../components/DevTools.jsx';
-// import Chat from '../components/Chat.jsx';
+import Chat from '../components/Chat.jsx';
 import Login from '../components/Login.jsx';
 
 import {Provider} from 'react-redux';
@@ -20,6 +19,7 @@ ReactDOM.render(
     <div>
       <Router history={history}>
         <Route path="/" component={App}>
+          <Route path="chat" component={Chat} />
           <Route path="login" component={Login} />
           <Route path="*" component={Login} />
         </Route>
