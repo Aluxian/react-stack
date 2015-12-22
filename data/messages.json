@@ -1,45 +1,45 @@
 {
   "messages": {
     "firebase": [{
-      "message": "First message in firebase",
+      "body": "First message in firebase",
       "date": "Wed, 08 Jul 2015 18:14:27 GMT",
       "author": "Hendrik Swanepoel",
       "profilePic": "http://www.gravatar.com/avatar/a424e1b0ab3a8dee82c25ae0f0804107?s=48&d=identicon"
     }, {
-      "message": "Second message in firebase",
+      "body": "Second message in firebase",
       "date": "Wed, 08 Jul 2015 18:14:32 GMT",
       "author": "Stewart Scott",
       "profilePic": "http://www.gravatar.com/avatar/f544faf10969339692d6d0474050f8fe?s=48&d=identicon"
     }],
     "flux": [{
-      "message": "First message in flux",
+      "body": "First message in flux",
       "date": "Wed, 08 Jul 2015 18:14:27 GMT",
       "author": "Hendrik Swanepoel",
       "profilePic": "http://www.gravatar.com/avatar/a424e1b0ab3a8dee82c25ae0f0804107?s=48&d=identicon"
     }, {
-      "message": "Second message in flux",
+      "body": "Second message in flux",
       "date": "Wed, 08 Jul 2015 18:14:32 GMT",
       "author": "Stewart Scott",
       "profilePic": "http://www.gravatar.com/avatar/f544faf10969339692d6d0474050f8fe?s=48&d=identicon"
     }],
     "react": [{
-      "message": "First message in react",
+      "body": "First message in react",
       "date": "Wed, 08 Jul 2015 18:14:27 GMT",
       "author": "Hendrik Swanepoel",
       "profilePic": "http://www.gravatar.com/avatar/a424e1b0ab3a8dee82c25ae0f0804107?s=48&d=identicon"
     }, {
-      "message": "Second message in react",
+      "body": "Second message in react",
       "date": "Wed, 08 Jul 2015 18:14:32 GMT",
       "author": "Stewart Scott",
       "profilePic": "http://www.gravatar.com/avatar/f544faf10969339692d6d0474050f8fe?s=48&d=identicon"
     }],
     "webpack": [{
-      "message": "First message in webpack",
+      "body": "First message in webpack",
       "date": "Wed, 08 Jul 2015 18:14:27 GMT",
       "author": "Hendrik Swanepoel",
       "profilePic": "http://www.gravatar.com/avatar/a424e1b0ab3a8dee82c25ae0f0804107?s=48&d=identicon"
     }, {
-      "message": "Second message in webpack",
+      "body": "Second message in webpack",
       "date": "Wed, 08 Jul 2015 18:14:32 GMT",
       "author": "Stewart Scott",
       "profilePic": "http://www.gravatar.com/avatar/f544faf10969339692d6d0474050f8fe?s=48&d=identicon"

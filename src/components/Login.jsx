@@ -1,18 +1,21 @@
-import React from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Card, CardText, RaisedButton} from 'material-ui';
-import actions from '../actions';
 
 class Login extends Component {
-
-  onClick() {
-    actions.login(this.context.router);
+  static propTypes = {
+    login: PropTypes.func//.isRequired
   }
 
   static contextTypes = {
-    router: React.PropTypes.func.isRequired
+    router: PropTypes.func//.isRequired
   }
 
-  render(){
+  onClick() {
+    console.log('click');
+    //this.props.login(this.context.router);
+  }
+
+  render() {
     return (
       <Card style={{
         'maxWidth': '800px',
@@ -26,9 +29,8 @@ class Login extends Component {
         </CardText>
 
         <RaisedButton style={{
-          display: 'block',
-        }} onClick={::this.onClick}
-        label="Log in with Google" primary={true} />
+          display: 'block'
+        }} onClick={::this.onClick} label="Log in with Google" primary />
       </Card>
     );
   }

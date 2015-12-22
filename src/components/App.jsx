@@ -1,6 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {RouteHandler} from 'react-router';
-import {connect} from 'react-redux';
+// import {connect} from 'react-redux';
 import mui from 'material-ui';
 
 const ThemeManager = new mui.Styles.ThemeManager();
@@ -8,7 +7,15 @@ const Colors = mui.Styles.Colors;
 const AppBar = mui.AppBar;
 
 class App extends Component {
-  constructor(){
+  static propTypes = {
+    children: PropTypes.node
+  }
+
+  static childContextTypes = {
+    muiTheme: PropTypes.object
+  }
+
+  constructor() {
     super();
 
     ThemeManager.setPalette({
@@ -17,10 +24,6 @@ class App extends Component {
       primary3Color: Colors.blue100,
       accent1Color: Colors.pink400
     });
-  }
-
-  static childContextTypes = {
-    muiTheme: React.PropTypes.object
   }
 
   getChildContext() {
@@ -33,7 +36,7 @@ class App extends Component {
     return (
       <div>
         <AppBar title="Tarkan's Awesome Chat App" />
-        <RouteHandler />
+        {this.props.children}
       </div>
     );
   }
@@ -41,11 +44,8 @@ class App extends Component {
 
 // Which props do we want to inject, given the global state?
 // Note: use https://github.com/faassen/reselect for better performance.
-function select(state) {
-  return {
-    visibleTodos: selectTodos(state.todos, state.visibilityFilter),
-    visibilityFilter: state.visibilityFilter
-  };
-}
+// function select(state) {
+//   return state;
+// }
 
-export default connect(select)(App);
+export default App;
