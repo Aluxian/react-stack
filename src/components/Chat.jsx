@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
-// import MessageList from './MessageList.jsx';
-// import ChannelList from './ChannelList.jsx';
+import MessageList from './MessageList.jsx';
+import ChannelList from './ChannelList.jsx';
 import MessageBox from './MessageBox.jsx';
 import {connect} from 'react-redux';
 import actions from '../actions';
@@ -8,10 +8,9 @@ import actions from '../actions';
 class Chat extends Component {
   static propTypes = {
     user: PropTypes.object,
+    channels: PropTypes.arrayOf(PropTypes.object.isRequired),
     messages: PropTypes.arrayOf(PropTypes.object.isRequired),
-    messagesLoading: PropTypes.bool,
-    channels: PropTypes.arrayOf(PropTypes.object),
-    channelOpened: PropTypes.func
+    messagesLoading: PropTypes.bool
   }
 
   static willTransitionTo(transition) {
@@ -30,8 +29,10 @@ class Chat extends Component {
           width: '100%',
           margin: '30px auto 30px'
         }}>
+          <ChannelList channels={this.props.channels} channelOpened={actions.channelOpened} />
+          <MessageList messages={this.props.messages} messagesLoading={this.props.messagesLoading} />
         </div>
-        <MessageBox />
+        <MessageBox sendMessage={actions.sendMessage} />
       </div>
     );
   }
@@ -41,10 +42,9 @@ class Chat extends Component {
 function select(state) {
   return {
     user: state.user,
-    messages: state.messages,
-    messagesLoading: state.messagesLoading,
-    channels: state.channels,
-    channelOpened: actions.channelOpened
+    channels: state.channels || [],
+    messages: state.messages || [],
+    messagesLoading: state.messagesLoading != undefined ? state.messagesLoading : true
   };
 }
 

@@ -1,21 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Card, List, CircularProgress} from 'material-ui';
 import Channel from './Channel.jsx';
 
 class ChannelList extends Component {
   static propTypes = {
     channels: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-    channelOpened: PropTypes.func.isRequired,
-    startListenForChannels: PropTypes.func.isRequired,
-    stopListenForChannels: PropTypes.func.isRequired
-  }
-
-  componentDidMount() {
-    // send action to download channels from firebase
-  }
-
-  componentWillUnmount() {
-
+    channelOpened: PropTypes.func.isRequired
   }
 
   render() {

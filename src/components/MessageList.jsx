@@ -1,36 +1,34 @@
-import React from 'react';
-import Message from './Message.jsx';
+import React, {Component, PropTypes} from 'react';
 import {Card, List, CircularProgress} from 'material-ui';
-import Firebase from 'firebase';
-import _ from 'lodash';
-
-// import connectToStores from 'alt/utils/connectToStores';
-// import ChatStore from '../stores/ChatStore';
-// @connectToStores
+import Message from './Message.jsx';
 
 class MessageList extends Component {
+  static propTypes = {
+    messages: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
+    messagesLoading: PropTypes.bool.isRequired
+  }
+
   constructor(props) {
     super(props);
-  }
-
-  static getStores() {
-    return [ChatStore];
-  }
-
-  static getPropsFromStores() {
-    return ChatStore.getState();
   }
 
   render() {
     let messageNodes = null;
 
     if (!this.props.messagesLoading) {
-      messageNodes = _.values(this.props.messages)
-        .map((message, i) => (<Message message={message} key={i}/>));
+      this.props.messages.map((message, i) => {
+        return (<Message message={message} key={i}/>);
+      });
     } else {
-      messageNodes = <CircularProgress mode="indeterminate" style={{
-        paddingTop: 20, paddingBottom: 20, margin: '0 auto', display: 'block', width: '60px'
-      }}/>;
+      messageNodes = (
+        <CircularProgress mode="indeterminate" style={{
+          paddingTop: 20,
+          paddingBottom: 20,
+          margin: '0 auto',
+          display: 'block',
+          width: '60px'
+        }}/>
+      );
     }
 
     return (

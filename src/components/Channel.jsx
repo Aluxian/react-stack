@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {ListItem} from 'material-ui';
 
 class Channel extends Component {
