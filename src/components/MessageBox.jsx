@@ -1,10 +1,12 @@
 import React, {Component, PropTypes} from 'react';
 import {Card} from 'material-ui';
+import rebase from '../rebase';
 import trim from 'trim';
 
 class MessageBox extends Component {
   static propTypes = {
-    sendMessage: PropTypes.func.isRequired
+    sendMessage: PropTypes.func.isRequired,
+    selectedChannel: PropTypes.object
   }
 
   constructor(props) {
@@ -23,7 +25,18 @@ class MessageBox extends Component {
   onKeyUp(event) {
     if (event.keyCode === 13 && trim(event.target.value) != '') {
       event.preventDefault();
-      this.props.sendMessage(this.state.message);
+      if (this.props.selectedChannel) {
+        this.props.sendMessage(this.state.message);
+        rebase.push('messages/' + this.props.selectedChannel.name, {
+          data: {
+            message: this.state.message,
+            date: new Date().toUTCString(),
+            author: 'author',//,
+            userId: 'uid',//state.user.uid,
+            profilePic: 'profilepic'//state.user.google.profileImageURL
+          }
+        });
+      }
       this.setState({
         message: ''
       });

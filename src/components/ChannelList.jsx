@@ -1,14 +1,29 @@
 import React, {Component, PropTypes} from 'react';
 import {Card, List, CircularProgress} from 'material-ui';
 import Channel from './Channel.jsx';
+import rebase from '../rebase';
 
 class ChannelList extends Component {
   static propTypes = {
     channels: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-    channelOpened: PropTypes.func.isRequired
+    channelOpened: PropTypes.func.isRequired,
+    channelsReceived: PropTypes.func.isRequired
+  }
+
+  componentDidMount() {
+    this.rebaseRef = rebase.listenTo('channels', {
+      context: this,
+      asArray: true,
+      then: this.props.channelsReceived
+    });
+  }
+
+  componentWillUnmount() {
+    rebase.removeBinding(this.rebaseRef);
   }
 
   render() {
+    console.log('render channel list', this.props.channels);
     if (!this.props.channels.length) {
       return (
         <Card style={{

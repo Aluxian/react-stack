@@ -32,6 +32,7 @@ ReactDOM.render(
       <Router history={history}>
         <Route path="/" component={App}>
           <IndexRedirect to="chat" />
+          <Route path="chat/:channelId" component={Chat} onEnter={requireAuth} />
           <Route path="chat" component={Chat} onEnter={requireAuth} />
           <Route path="login" component={Login} onEnter={redirectIfAuth} />
         </Route>

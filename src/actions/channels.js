@@ -1,8 +1,9 @@
 import constants from '../constants';
 
-export function channelsReceived() {
+export function channelsReceived(channels) {
   return {
-    type: constants.CHANNELS_RECEIVED
+    type: constants.CHANNELS_RECEIVED,
+    channels
   };
 }
 

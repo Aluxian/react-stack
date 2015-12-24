@@ -20,7 +20,7 @@ class Channel extends Component {
 
     return (
       <ListItem
-        href={'/#/chat/' + this.props.channel.key}
+        href={'/chat/' + this.props.channel.key}
         style={style}
         key={this.props.channel.key}
       >{this.props.channel.name}</ListItem>

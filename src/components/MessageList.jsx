@@ -1,15 +1,38 @@
 import React, {Component, PropTypes} from 'react';
 import {Card, List, CircularProgress} from 'material-ui';
 import Message from './Message.jsx';
+import rebase from '../rebase';
 
 class MessageList extends Component {
   static propTypes = {
     messages: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-    messagesLoading: PropTypes.bool.isRequired
+    messagesLoading: PropTypes.bool.isRequired,
+    messagesReceived: PropTypes.func.isRequired,
+    channel: PropTypes.object
   }
 
   constructor(props) {
     super(props);
+  }
+
+  componentWillReceiveProps(props) {
+    if (this.rebaseRef) {
+      rebase.removeBinding(this.rebaseRef);
+      this.rebaseRef = null;
+    }
+
+    const channel = props.channel.name;
+
+    this.rebaseRef = rebase.listenTo('messages/' + channel, {
+      context: this,
+      asArray: true,
+      then: this.props.messagesReceived
+    });
+  }
+
+  componentWillUnmount() {
+    rebase.removeBinding(this.rebaseRef);
+    this.rebaseRef = null;
   }
 
   render() {

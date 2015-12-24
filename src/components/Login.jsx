@@ -1,7 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {Card, CardText, RaisedButton} from 'material-ui';
-import firebaseRef from '../firebase';
-import actions from '../actions';
+// import actions from '../actions';
 
 class Login extends Component {
   static propTypes = {
@@ -9,14 +8,14 @@ class Login extends Component {
   }
 
   onClick() {
-    firebaseRef.authWithOAuthPopup('google', (err, user) => {
-      if (err) {
-        return console.error(err);
-      }
-
-      actions.login(user);
-      this.props.history.pushState(null, '/chat');
-    });
+    // firebaseRef.authWithOAuthPopup('google', (err, user) => {
+    //   if (err) {
+    //     return console.error(err);
+    //   }
+    //
+    //   actions.login(user);
+    //   this.props.history.pushState(null, '/chat');
+    // });
   }
 
   render() {
