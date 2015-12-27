@@ -1,56 +1,73 @@
 import React, {Component, PropTypes} from 'react';
-import {Card, List, CircularProgress} from 'material-ui';
+import {Card, CardTitle, List, CircularProgress} from 'material-ui';
 import Message from './Message.jsx';
 import rebase from '../rebase';
 
 class MessageList extends Component {
   static propTypes = {
-    messages: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-    messagesLoading: PropTypes.bool.isRequired,
-    messagesReceived: PropTypes.func.isRequired,
-    channel: PropTypes.object
+    isLoading: PropTypes.bool.isRequired,
+    messages: PropTypes.object.isRequired,
+    channelKey: PropTypes.string,
+    onMessagesReceived: PropTypes.func.isRequired
   }
 
-  constructor(props) {
-    super(props);
-  }
-
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(nextProps) {
     if (this.rebaseRef) {
       rebase.removeBinding(this.rebaseRef);
       this.rebaseRef = null;
     }
-
-    const channel = props.channel.name;
-
-    this.rebaseRef = rebase.listenTo('messages/' + channel, {
-      context: this,
-      asArray: true,
-      then: this.props.messagesReceived
-    });
+    if (nextProps.channelKey && nextProps.isLoading) {
+      this.rebaseRef = rebase.listenTo(`messages/${nextProps.channelKey}`, {
+        context: this,
+        then(data) {
+          console.log('data', data);
+          this.props.onMessagesReceived(data);
+        }
+      });
+    }
   }
 
   componentWillUnmount() {
-    rebase.removeBinding(this.rebaseRef);
-    this.rebaseRef = null;
+    if (this.rebaseRef) {
+      rebase.removeBinding(this.rebaseRef);
+      this.rebaseRef = null;
+    }
   }
 
   render() {
-    let messageNodes = null;
+    const messageKeys = Object.keys(this.props.messages);
+    let children = null;
+    let title = null;
 
-    if (!this.props.messagesLoading) {
-      this.props.messages.map((message, i) => {
-        return (<Message message={message} key={i}/>);
-      });
-    } else {
-      messageNodes = (
+    if (this.props.channelKey && this.props.isLoading) {
+      title = (
+        <CardTitle title="Messages" />
+      );
+
+      children = (
         <CircularProgress mode="indeterminate" style={{
           paddingTop: 20,
           paddingBottom: 20,
           margin: '0 auto',
           display: 'block',
           width: '60px'
-        }}/>
+        }} />
+      );
+    } else if (messageKeys.length) {
+      title = (
+        <CardTitle title="Messages" />
+      );
+
+      const messages = this.props.messages;
+      children = messageKeys.map(key => {
+        const message = messages[key];
+        return (
+          <Message {...message} key={key} />
+        );
+      });
+    } else {
+      title = (
+        <CardTitle title="Messages" subtitle="No messages." />
       );
     }
 
@@ -59,8 +76,9 @@ class MessageList extends Component {
         flexGrow: 2,
         marginLeft: 30
       }}>
+        {title}
         <List>
-          {messageNodes}
+          {children}
         </List>
       </Card>
     );

@@ -1,58 +1,80 @@
 import React, {Component, PropTypes} from 'react';
-import {Card, List, CircularProgress} from 'material-ui';
+import {Card, CardTitle, List, CircularProgress} from 'material-ui';
 import Channel from './Channel.jsx';
 import rebase from '../rebase';
 
 class ChannelList extends Component {
   static propTypes = {
-    channels: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
-    channelOpened: PropTypes.func.isRequired,
-    channelsReceived: PropTypes.func.isRequired
+    isLoading: PropTypes.bool.isRequired,
+    channels: PropTypes.object.isRequired,
+    onChannelSelected: PropTypes.func.isRequired,
+    onChannelsReceived: PropTypes.func.isRequired,
+    selectedKey: PropTypes.string
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.rebaseRef = rebase.listenTo('channels', {
       context: this,
-      asArray: true,
-      then: this.props.channelsReceived
+      then: this.props.onChannelsReceived
     });
   }
 
   componentWillUnmount() {
-    rebase.removeBinding(this.rebaseRef);
+    if (this.rebaseRef) {
+      rebase.removeBinding(this.rebaseRef);
+      this.rebaseRef = null;
+    }
   }
 
   render() {
-    console.log('render channel list', this.props.channels);
-    if (!this.props.channels.length) {
-      return (
-        <Card style={{
-          flexGrow: 1
-        }}>
-          <CircularProgress
-            mode="indeterminate"
-            style={{
-              paddingTop: '20px',
-              paddingBottom: '20px',
-              margin: '0 auto',
-              display: 'block',
-              width: '60px'
-            }}
-          />
-        </Card>
+    const channelKeys = Object.keys(this.props.channels);
+    let children = null;
+    let title = null;
+
+    if (this.props.isLoading) {
+      title = (
+        <CardTitle title="Channels" />
+      );
+
+      children = (
+        <CircularProgress mode="indeterminate" style={{
+          paddingTop: 20,
+          paddingBottom: 20,
+          margin: '0 auto',
+          display: 'block',
+          width: '60px'
+        }} />
+      );
+    } else if (channelKeys.length) {
+      title = (
+        <CardTitle title="Channels" />
+      );
+
+      const selectedKey = this.props.selectedKey || channelKeys[0];
+      const channels = this.props.channels;
+
+      children = channelKeys.map(key => {
+        const onClick = () => this.props.onChannelSelected(key);
+        const selected = selectedKey == key;
+        const channel = channels[key];
+
+        return (
+          <Channel {...channel} key={key} onClick={onClick} selected={selected} />
+        );
+      });
+    } else {
+      title = (
+        <CardTitle title="Channels" subtitle="No channels." />
       );
     }
-
-    const channelNodes = this.props.channels.map((channel, i) => {
-      return (<Channel channel={channel} key={i} channelOpened={this.props.channelOpened} />);
-    });
 
     return (
       <Card style={{
         flexGrow: 1
       }}>
+        {title}
         <List>
-          {channelNodes}
+          {children}
         </List>
       </Card>
     );

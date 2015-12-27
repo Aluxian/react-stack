@@ -1,20 +1,23 @@
-import {Component, PropTypes} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {ListItem, Avatar} from 'material-ui';
 
 class Message extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   static propTypes = {
-    message: PropTypes.func.isRequired
+    body: PropTypes.string.isRequired,
+    author: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      avatarUrl: PropTypes.string.isRequired
+    }).isRequired
   }
 
   render() {
-    const leftAvatar = (<Avatar src={this.props.message.profilePic} />);
+    const leftAvatar = (
+      <Avatar src={this.props.author.avatarUrl} />
+    );
+
     return (
       <ListItem leftAvatar={leftAvatar}>
-        {this.props.message.body}
+        {this.props.body}
       </ListItem>
     );
   }

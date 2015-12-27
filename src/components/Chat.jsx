@@ -2,36 +2,42 @@ import React, {Component, PropTypes} from 'react';
 import MessageList from './MessageList.jsx';
 import ChannelList from './ChannelList.jsx';
 import MessageBox from './MessageBox.jsx';
-import {bindActionCreators} from 'redux';
+import {pushPath, replacePath} from 'redux-simple-router';
 import {connect} from 'react-redux';
 import actions from '../actions';
-import store from '../store';
 
 class Chat extends Component {
   static propTypes = {
-    user: PropTypes.object,
-    channels: PropTypes.arrayOf(PropTypes.object.isRequired),
-    messages: PropTypes.arrayOf(PropTypes.object.isRequired),
-    areMessagesLoading: PropTypes.bool.isRequired,
-    channelOpened: PropTypes.func.isRequired,
-    channelsReceived: PropTypes.func.isRequired,
-    sendMessage: PropTypes.func.isRequired,
-    messagesReceived: PropTypes.func.isRequired,
-    params: PropTypes.object
+    user: PropTypes.object.isRequired,
+    messages: PropTypes.shape({
+      isLoading: PropTypes.bool.isRequired,
+      data: PropTypes.object.isRequired
+    }).isRequired,
+    channels: PropTypes.shape({
+      isLoading: PropTypes.bool.isRequired,
+      data: PropTypes.object.isRequired
+    }).isRequired,
+    params: PropTypes.object.isRequired,
+    onChannelsReceived: PropTypes.func.isRequired,
+    onMessagesReceived: PropTypes.func.isRequired,
+    onMessagesLoading: PropTypes.func.isRequired,
+    onReplacePath: PropTypes.func.isRequired,
+    onPushPath: PropTypes.func.isRequired
   }
 
-  static willTransitionTo(transition) {
-    if (!this.props.user) {
-      transition.redirect('/login');
+  componentWillReceiveProps(nextProps) {
+    const keys = Object.keys(nextProps.channels.data);
+    if (keys.length && !nextProps.params.channelKey) {
+      nextProps.onReplacePath(`/chat/${keys[0]}`);
     }
   }
 
   render() {
-    console.log('render chat', this.props.channels, 'but', store.getState());
-    const sc = this.props.channels.find(c => c.name == this.props.params.channelId);
-    if (sc) {
-      sc.selected = true;
-    }
+    const onChannelSelected = (key) => {
+      this.props.onPushPath(`/chat/${key}`);
+      this.props.onMessagesLoading(true);
+    };
+
     return (
       <div>
         <div style={{
@@ -42,33 +48,37 @@ class Chat extends Component {
           margin: '30px auto 30px'
         }}>
           <ChannelList
-            channels={this.props.channels}
-            channelOpened={this.props.channelOpened}
-            channelsReceived={this.props.channelsReceived} />
+            isLoading={this.props.channels.isLoading}
+            channels={this.props.channels.data}
+            selectedKey={this.props.params.channelKey}
+            onChannelSelected={onChannelSelected}
+            onChannelsReceived={this.props.onChannelsReceived} />
           <MessageList
-            messages={this.props.messages}
-            messagesLoading={this.props.areMessagesLoading}
-            messagesReceived={this.props.messagesReceived}
-            channel={sc} />
+            isLoading={this.props.messages.isLoading}
+            messages={this.props.messages.data}
+            channelKey={this.props.params.channelKey}
+            onMessagesReceived={this.props.onMessagesReceived} />
         </div>
-        <MessageBox
-          sendMessage={this.props.sendMessage}
-          selectedChannel={sc} />
+        <MessageBox user={this.props.user} channelKey={this.props.params.channelKey} />
       </div>
     );
   }
 }
 
-// Note: use https://github.com/faassen/reselect for better performance.
 function select(state) {
-  const all = state.all;
-  console.log('select', state);
   return {
-    user: all.user,
-    channels: all.channels || [],
-    messages: all.messages || [],
-    areMessagesLoading: all.messagesLoading != undefined ? all.messagesLoading : true
+    user: state.auth.user,
+    messages: state.messages,
+    channels: state.channels
   };
 }
 
-export default connect(select, bindActionCreators(actions, store.dispatch))(Chat);
+const bindActions = {
+  onChannelsReceived: actions.channelsReceived,
+  onMessagesReceived: actions.messagesReceived,
+  onMessagesLoading: actions.messagesLoading,
+  onReplacePath: replacePath,
+  onPushPath: pushPath
+};
+
+export default connect(select, bindActions)(Chat);

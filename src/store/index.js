@@ -1,9 +1,15 @@
-import {createStore, combineReducers} from 'redux';
+import {createStore, combineReducers, applyMiddleware} from 'redux';
 import {routeReducer} from 'redux-simple-router';
 import reducers from '../reducers';
+import thunk from 'redux-thunk';
 
-const reducer = combineReducers(Object.assign({}, reducers, {
+const reducer = combineReducers({
+  ...reducers,
   routing: routeReducer
-}));
+});
 
-export default createStore(reducer);
+const createStoreWithMiddleware = applyMiddleware(
+  thunk
+)(createStore);
+
+export default createStoreWithMiddleware(reducer);

@@ -5,8 +5,8 @@ import trim from 'trim';
 
 class MessageBox extends Component {
   static propTypes = {
-    sendMessage: PropTypes.func.isRequired,
-    selectedChannel: PropTypes.object
+    channelKey: PropTypes.string,
+    user: PropTypes.object.isRequired
   }
 
   constructor(props) {
@@ -22,18 +22,17 @@ class MessageBox extends Component {
     });
   }
 
-  onKeyUp(event) {
+  onKeyDown(event) {
     if (event.keyCode === 13 && trim(event.target.value) != '') {
       event.preventDefault();
-      if (this.props.selectedChannel) {
-        this.props.sendMessage(this.state.message);
-        rebase.push('messages/' + this.props.selectedChannel.name, {
+      if (this.props.channelKey) {
+        rebase.push(`messages/${this.props.channelKey}`, {
           data: {
-            message: this.state.message,
-            date: new Date().toUTCString(),
-            author: 'author',//,
-            userId: 'uid',//state.user.uid,
-            profilePic: 'profilepic'//state.user.google.profileImageURL
+            body: this.state.message,
+            author: {
+              name: this.props.user.google.displayName,
+              avatarUrl: this.props.user.google.profileImageURL
+            }
           }
         });
       }
@@ -53,7 +52,7 @@ class MessageBox extends Component {
         <textarea
           value={this.state.message}
           onChange={::this.onChange}
-          onKeyUp={::this.onKeyUp}
+          onKeyDown={::this.onKeyDown}
           style={{
             width: '100%',
             borderColor: '#D0D0D0',

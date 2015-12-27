@@ -6,7 +6,7 @@ const Colors = mui.Styles.Colors;
 
 class App extends Component {
   static propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node.isRequired
   }
 
   static childContextTypes = {
