@@ -6,7 +6,7 @@ import firebase from '../firebase';
 export function authLoginRequest() {
   return async (dispatch) => {
     try {
-      const user = await promisify(firebase.authWithOAuthPopup)('google');
+      const user = await promisify(::firebase.authWithOAuthPopup)('google');
       dispatch(authLoginSuccess(user));
       dispatch(replacePath('/chat'));
       return true;
@@ -28,5 +28,11 @@ export function authLoginFailed(error) {
   return {
     type: constants.AUTH_LOGIN_FAILED,
     error
+  };
+}
+
+export function authLogOut() {
+  return {
+    type: constants.AUTH_LOGOUT
   };
 }

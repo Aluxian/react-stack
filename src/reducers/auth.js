@@ -6,7 +6,7 @@ const authData = firebase.getAuth();
 export const INITIAL_STATE = {
   user: authData,
   isAuthenticated: !!authData,
-  authError: null
+  loginError: null
 };
 
 export default {
@@ -15,7 +15,7 @@ export default {
     return {
       user: action.user,
       isAuthenticated: true,
-      authError: null
+      loginError: null
     };
   },
 
@@ -23,7 +23,15 @@ export default {
     return {
       user: null,
       isAuthenticated: false,
-      authError: action.error
+      loginError: action.error
+    };
+  },
+
+  [constants.AUTH_LOGOUT](state, action) {
+    return {
+      user: null,
+      isAuthenticated: false,
+      loginError: null
     };
   }
 

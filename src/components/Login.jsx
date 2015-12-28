@@ -2,12 +2,13 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import actions from '../actions';
 
-import Card from 'material-ui/lib/card';
+import Card from 'material-ui/lib/card/card';
 import CardText from 'material-ui/lib/card/card-text';
 import RaisedButton from 'material-ui/lib/raised-button';
 
 class Login extends Component {
   static propTypes = {
+    loginError: PropTypes.string,
     onLogIn: PropTypes.func.isRequired
   }
 
@@ -21,6 +22,7 @@ class Login extends Component {
         <CardText style={{
           textAlign: 'center'
         }}>
+          {this.props.loginError}
           To start chatting away, please log in with your Google account.
         </CardText>
 
@@ -32,8 +34,14 @@ class Login extends Component {
   }
 }
 
+function select(state) {
+  return {
+    loginError: state.auth.loginError
+  };
+}
+
 const bindActions = {
   onLogIn: actions.authLoginRequest
 };
 
-export default connect(null, bindActions)(Login);
+export default connect(select, bindActions)(Login);

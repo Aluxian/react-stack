@@ -14,6 +14,7 @@ function render(history) {
         <Route path="chat/:channelKey" component={Chat} onEnter={handlers.requireAuth} />
         <Route path="chat" component={Chat} onEnter={handlers.requireAuth} />
         <Route path="login" component={Login} onEnter={handlers.redirectIfAuth} />
+        <Route path="logout" onEnter={handlers.logOut} />
       </Route>
     </Router>
   );
