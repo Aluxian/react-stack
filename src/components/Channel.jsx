@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
-import {ListItem} from 'material-ui';
+
+import ListItem from 'material-ui/lib/lists/list-item';
 
 class Channel extends Component {
   static propTypes = {

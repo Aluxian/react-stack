@@ -1,5 +1,7 @@
 import React, {Component, PropTypes} from 'react';
-import {ListItem, Avatar} from 'material-ui';
+
+import ListItem from 'material-ui/lib/lists/list-item';
+import Avatar from 'material-ui/lib/avatar';
 
 class Message extends Component {
   static propTypes = {

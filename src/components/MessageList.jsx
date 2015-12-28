@@ -1,7 +1,11 @@
 import React, {Component, PropTypes} from 'react';
-import {Card, CardTitle, List, CircularProgress} from 'material-ui';
-import Message from './Message.jsx';
 import firebase from '../firebase';
+
+import Message from './Message.jsx';
+import Card from 'material-ui/lib/card/card';
+import CardTitle from 'material-ui/lib/card/card-title';
+import List from 'material-ui/lib/lists/list';
+import CircularProgress from 'material-ui/lib/circular-progress';
 
 class MessageList extends Component {
   static propTypes = {

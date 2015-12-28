@@ -1,7 +1,11 @@
 import React, {Component, PropTypes} from 'react';
-import {Card, CardTitle, List, CircularProgress} from 'material-ui';
-import Channel from './Channel.jsx';
 import firebase from '../firebase';
+
+import Channel from './Channel.jsx';
+import Card from 'material-ui/lib/card/card';
+import CardTitle from 'material-ui/lib/card/card-title';
+import List from 'material-ui/lib/lists/list';
+import CircularProgress from 'material-ui/lib/circular-progress';
 
 class ChannelList extends Component {
   static propTypes = {

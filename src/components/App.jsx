@@ -1,33 +1,14 @@
 import React, {Component, PropTypes} from 'react';
-import mui, {AppBar} from 'material-ui';
+import AppBar from 'material-ui/lib/app-bar';
 
-const ThemeManager = new mui.Styles.ThemeManager();
-const Colors = mui.Styles.Colors;
+import CustomTheme from '../theme';
+import ThemeManager from 'material-ui/lib/styles/theme-manager';
+import ThemeDecorator from 'material-ui/lib/styles/theme-decorator';
 
+@ThemeDecorator(ThemeManager.getMuiTheme(CustomTheme))
 class App extends Component {
   static propTypes = {
     children: PropTypes.node.isRequired
-  }
-
-  static childContextTypes = {
-    muiTheme: PropTypes.object
-  }
-
-  constructor() {
-    super();
-
-    ThemeManager.setPalette({
-      primary1Color: Colors.blue500,
-      primary2Color: Colors.blue700,
-      primary3Color: Colors.blue100,
-      accent1Color: Colors.pink400
-    });
-  }
-
-  getChildContext() {
-    return {
-      muiTheme: ThemeManager.getCurrentTheme()
-    };
   }
 
   render() {

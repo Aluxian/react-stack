@@ -1,7 +1,8 @@
 import React, {Component, PropTypes} from 'react';
-import {Card} from 'material-ui';
 import firebase from '../firebase';
 import trim from 'trim';
+
+import Card from 'material-ui/lib/card/card';
 
 class MessageBox extends Component {
   static propTypes = {
