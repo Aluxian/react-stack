@@ -1,7 +1,7 @@
 import constants from '../constants';
-import rebase from '../rebase';
+import firebase from '../firebase';
 
-const authData = rebase.getAuth();
+const authData = firebase.getAuth();
 
 export const INITIAL_STATE = {
   user: authData,

@@ -2,13 +2,13 @@ import store from '../store';
 
 export function requireAuth(nextState, replaceState) {
   if (!isAuthenticated()) {
-    replaceState(null, 'login');
+    replaceState(null, '/login');
   }
 }
 
 export function redirectIfAuth(nextState, replaceState) {
   if (isAuthenticated()) {
-    replaceState(null, 'chat');
+    replaceState(null, '/chat');
   }
 }
 

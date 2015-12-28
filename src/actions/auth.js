@@ -1,12 +1,12 @@
 import {replacePath} from 'redux-simple-router';
 import {promisify} from 'bluebird';
 import constants from '../constants';
-import rebase from '../rebase';
+import firebase from '../firebase';
 
 export function authLoginRequest() {
   return async (dispatch) => {
     try {
-      const user = await promisify(rebase.authWithOAuthPopup)('google');
+      const user = await promisify(firebase.authWithOAuthPopup)('google');
       dispatch(authLoginSuccess(user));
       dispatch(replacePath('/chat'));
       return true;

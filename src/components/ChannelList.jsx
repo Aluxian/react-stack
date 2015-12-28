@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Card, CardTitle, List, CircularProgress} from 'material-ui';
 import Channel from './Channel.jsx';
-import rebase from '../rebase';
+import firebase from '../firebase';
 
 class ChannelList extends Component {
   static propTypes = {
@@ -13,17 +13,15 @@ class ChannelList extends Component {
   }
 
   componentWillMount() {
-    this.rebaseRef = rebase.listenTo('channels', {
-      context: this,
-      then: this.props.onChannelsReceived
-    });
+    firebase.child('channels').on('value', ::this.onSnapshot);
   }
 
   componentWillUnmount() {
-    if (this.rebaseRef) {
-      rebase.removeBinding(this.rebaseRef);
-      this.rebaseRef = null;
-    }
+    firebase.child('channels').off('value', ::this.onSnapshot);
+  }
+
+  onSnapshot(snapshot) {
+    this.props.onChannelsReceived(snapshot.val());
   }
 
   render() {

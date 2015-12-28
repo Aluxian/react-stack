@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {Card} from 'material-ui';
-import rebase from '../rebase';
+import firebase from '../firebase';
 import trim from 'trim';
 
 class MessageBox extends Component {
@@ -26,13 +26,11 @@ class MessageBox extends Component {
     if (event.keyCode === 13 && trim(event.target.value) != '') {
       event.preventDefault();
       if (this.props.channelKey) {
-        rebase.push(`messages/${this.props.channelKey}`, {
-          data: {
-            body: this.state.message,
-            author: {
-              name: this.props.user.google.displayName,
-              avatarUrl: this.props.user.google.profileImageURL
-            }
+        firebase.child('messages').child(this.props.channelKey).push({
+          body: this.state.message,
+          author: {
+            name: this.props.user.google.displayName,
+            avatarUrl: this.props.user.google.profileImageURL
           }
         });
       }

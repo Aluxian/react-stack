@@ -1,7 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Card, CardTitle, List, CircularProgress} from 'material-ui';
 import Message from './Message.jsx';
-import rebase from '../rebase';
+import firebase from '../firebase';
 
 class MessageList extends Component {
   static propTypes = {
@@ -12,26 +12,22 @@ class MessageList extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.rebaseRef) {
-      rebase.removeBinding(this.rebaseRef);
-      this.rebaseRef = null;
+    if (this.props.channelKey) {
+      firebase.child('messages').child(this.props.channelKey).off('value', ::this.onSnapshot);
     }
     if (nextProps.channelKey && nextProps.isLoading) {
-      this.rebaseRef = rebase.listenTo(`messages/${nextProps.channelKey}`, {
-        context: this,
-        then(data) {
-          console.log('data', data);
-          this.props.onMessagesReceived(data);
-        }
-      });
+      firebase.child('messages').child(nextProps.channelKey).on('value', ::this.onSnapshot);
     }
   }
 
   componentWillUnmount() {
-    if (this.rebaseRef) {
-      rebase.removeBinding(this.rebaseRef);
-      this.rebaseRef = null;
+    if (this.props.channelKey) {
+      firebase.child('messages').child(this.props.channelKey).off('value', ::this.onSnapshot);
     }
+  }
+
+  onSnapshot(snapshot) {
+    this.props.onMessagesReceived(snapshot.val());
   }
 
   render() {
