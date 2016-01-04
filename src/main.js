@@ -11,6 +11,12 @@ import {createHistory} from 'history';
 import routes from './routes';
 import store from './store';
 
+// Needed for onTouchTap
+// Can go away when react 1.0 release
+// Check this repo:
+// https://github.com/zilverline/react-tap-event-plugin
+injectTapEventPlugin();
+
 const history = createHistory();
 syncReduxAndRouter(history, store);
 
@@ -20,9 +26,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('container')
 );
-
-// Needed for onTouchTap
-// Can go away when react 1.0 release
-// Check this repo:
-// https://github.com/zilverline/react-tap-event-plugin
-injectTapEventPlugin();
