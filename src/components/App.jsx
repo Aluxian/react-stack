@@ -1,4 +1,6 @@
 import React, {Component, PropTypes} from 'react';
+import {pushPath} from 'redux-simple-router';
+import {connect} from 'react-redux';
 
 import CustomTheme from '../theme';
 import ThemeManager from 'material-ui/lib/styles/theme-manager';
@@ -13,7 +15,14 @@ import MenuItem from 'material-ui/lib/menus/menu-item';
 @ThemeDecorator(ThemeManager.getMuiTheme(CustomTheme))
 class App extends Component {
   static propTypes = {
-    children: PropTypes.node.isRequired
+    children: PropTypes.node.isRequired,
+    onPushPath: PropTypes.func.isRequired
+  }
+
+  redirectHandler(path) {
+    return () => {
+      this.props.onPushPath(path);
+    };
   }
 
   render() {
@@ -29,9 +38,8 @@ class App extends Component {
               targetOrigin={{horizontal: 'right', vertical: 'top'}}
               anchorOrigin={{horizontal: 'right', vertical: 'top'}}
             >
-              <MenuItem primaryText="Refresh" />
-              <MenuItem primaryText="Help" />
-              <MenuItem primaryText="Sign out" />
+              <MenuItem primaryText="My Account" onClick={this.redirectHandler('/account')} />
+              <MenuItem primaryText="Log out" onClick={this.redirectHandler('/logout')} />
             </IconMenu>
           }
         />
@@ -41,4 +49,8 @@ class App extends Component {
   }
 }
 
-export default App;
+const bindActions = {
+  onPushPath: pushPath
+};
+
+export default connect(null, bindActions)(App);
